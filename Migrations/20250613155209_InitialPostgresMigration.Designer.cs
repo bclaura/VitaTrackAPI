@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VitaTrackAPI.Models;
 
 #nullable disable
@@ -12,8 +12,8 @@ using VitaTrackAPI.Models;
 namespace VitaTrackAPI.Migrations
 {
     [DbContext(typeof(VitaTrackContext))]
-    [Migration("20250522115607_AddCreatedAtToMedicalHistory")]
-    partial class AddCreatedAtToMedicalHistory
+    [Migration("20250613155209_InitialPostgresMigration")]
+    partial class InitialPostgresMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,28 +21,28 @@ namespace VitaTrackAPI.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.5")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("VitaTrackAPI.Models.Alarm", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool?>("Activated")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false)
                         .HasColumnName("activated");
 
                     b.Property<string>("AlarmType")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("alarm_type");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -52,11 +52,11 @@ namespace VitaTrackAPI.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.HasKey("Id")
@@ -71,23 +71,23 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ChartType")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("chart_type");
 
                     b.Property<string>("DataLabel")
                         .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)")
+                        .HasColumnType("character varying(225)")
                         .HasColumnName("data_label");
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.Property<DateTime?>("RecordedAt")
@@ -112,51 +112,51 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AvailabilityHours")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("availability_hours");
 
                     b.Property<string>("Bio")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("bio");
 
                     b.Property<string>("ClinicAddress")
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("clinic_address");
 
                     b.Property<string>("Gender")
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
+                        .HasColumnType("character varying(10)")
                         .HasColumnName("gender");
 
                     b.Property<string>("HonorificTitle")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("honorific_title");
 
                     b.Property<bool?>("IsFavorite")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false)
                         .HasColumnName("is_favorite");
 
                     b.Property<string>("ProfilePictureBase64")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("profile_picture_base64");
 
                     b.Property<string>("Specialization")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("Specialization");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
@@ -171,18 +171,18 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.Property<string>("Signal")
                         .HasMaxLength(1000)
-                        .HasColumnType("nvarchar(1000)")
+                        .HasColumnType("character varying(1000)")
                         .HasColumnName("signal");
 
                     b.Property<DateTime?>("Timestamp")
@@ -203,10 +203,10 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<decimal?>("Latitude")
                         .HasColumnType("decimal(9, 6)")
@@ -217,7 +217,7 @@ namespace VitaTrackAPI.Migrations
                         .HasColumnName("longitude");
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.Property<DateTime?>("RecordedAt")
@@ -238,28 +238,29 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Allergies")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("allergies");
 
                     b.Property<string>("CardiologyConsultations")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("cardiology_consultations");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
 
                     b.Property<string>("History")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("history");
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.HasKey("Id")
@@ -274,28 +275,28 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool?>("IsRead")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
+                        .HasColumnType("boolean")
                         .HasDefaultValue(false)
                         .HasColumnName("is_read");
 
                     b.Property<string>("Message1")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("message");
 
                     b.Property<int>("ReceiverId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("receiver_id");
 
                     b.Property<int>("SenderId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("sender_id");
 
                     b.Property<DateTime?>("SentAt")
@@ -318,58 +319,58 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdressCity")
                         .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)")
+                        .HasColumnType("character varying(225)")
                         .HasColumnName("adress_city");
 
                     b.Property<string>("AdressCounty")
                         .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)")
+                        .HasColumnType("character varying(225)")
                         .HasColumnName("adress_county");
 
                     b.Property<string>("AdressStreet")
                         .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)")
+                        .HasColumnType("character varying(225)")
                         .HasColumnName("adress_street");
 
                     b.Property<int?>("Age")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("age");
 
                     b.Property<string>("Cnp")
                         .IsRequired()
                         .HasMaxLength(13)
-                        .HasColumnType("nvarchar(13)")
+                        .HasColumnType("character varying(13)")
                         .HasColumnName("cnp");
 
                     b.Property<string>("Email")
                         .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)")
+                        .HasColumnType("character varying(225)")
                         .HasColumnName("email");
 
                     b.Property<string>("Occupation")
                         .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)")
+                        .HasColumnType("character varying(225)")
                         .HasColumnName("occupation");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
+                        .HasColumnType("character varying(15)")
                         .HasColumnName("phone_number");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.Property<string>("Workplace")
                         .HasMaxLength(225)
-                        .HasColumnType("nvarchar(225)")
+                        .HasColumnType("character varying(225)")
                         .HasColumnName("workplace");
 
                     b.HasKey("Id")
@@ -387,18 +388,18 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ActivityType")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("activity_type");
 
                     b.Property<int?>("Duration")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("duration");
 
                     b.Property<DateTime?>("EndTime")
@@ -406,7 +407,7 @@ namespace VitaTrackAPI.Migrations
                         .HasColumnName("end_time");
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.Property<DateTime?>("StartTime")
@@ -425,26 +426,26 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AdditionalInstructions")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("additional_instructions");
 
                     b.Property<int?>("DailyDuration")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("daily_duration");
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.Property<string>("RecommendationType")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("recommendation_type");
 
                     b.HasKey("Id")
@@ -459,18 +460,18 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("PatientId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("patient_id");
 
                     b.Property<string>("SensorType")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("sensor_type");
 
                     b.Property<DateTime?>("Timestamp")
@@ -495,10 +496,10 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -507,45 +508,45 @@ namespace VitaTrackAPI.Migrations
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("date_of_birth");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("email");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("last_name");
 
                     b.Property<string>("MobileNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("mobile_number");
 
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)")
+                        .HasColumnType("character varying(255)")
                         .HasColumnName("password");
 
                     b.Property<string>("ProfilePictureBase64")
-                        .HasColumnType("nvarchar(max)")
+                        .HasColumnType("text")
                         .HasColumnName("profile_picture_base64");
 
                     b.Property<string>("Role")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
+                        .HasColumnType("character varying(20)")
                         .HasColumnName("role");
 
                     b.HasKey("Id")
@@ -561,17 +562,17 @@ namespace VitaTrackAPI.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("DoctorId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("doctor_id");
 
                     b.Property<int>("UserId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id");

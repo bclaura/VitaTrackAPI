@@ -1,12 +1,13 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace VitaTrackAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCreatedAtToMedicalHistory : Migration
+    public partial class InitialPostgresMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,17 +16,17 @@ namespace VitaTrackAPI.Migrations
                 name: "users",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    first_name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    last_name = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    password = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    role = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    created_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    mobile_number = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    date_of_birth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    profile_picture_base64 = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    first_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    last_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    password = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    role = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    mobile_number = table.Column<string>(type: "text", nullable: false),
+                    date_of_birth = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    profile_picture_base64 = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,17 +37,17 @@ namespace VitaTrackAPI.Migrations
                 name: "doctors",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    honorific_title = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    gender = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    is_favorite = table.Column<bool>(type: "bit", nullable: true, defaultValue: false),
-                    bio = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    availability_hours = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    clinic_address = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
-                    profile_picture_base64 = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    honorific_title = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    gender = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: true),
+                    is_favorite = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false),
+                    bio = table.Column<string>(type: "text", nullable: true),
+                    availability_hours = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    clinic_address = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    profile_picture_base64 = table.Column<string>(type: "text", nullable: true),
+                    Specialization = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,13 +64,13 @@ namespace VitaTrackAPI.Migrations
                 name: "messages",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    sender_id = table.Column<int>(type: "int", nullable: false),
-                    receiver_id = table.Column<int>(type: "int", nullable: false),
-                    message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    sent_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    is_read = table.Column<bool>(type: "bit", nullable: true, defaultValue: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    sender_id = table.Column<int>(type: "integer", nullable: false),
+                    receiver_id = table.Column<int>(type: "integer", nullable: false),
+                    message = table.Column<string>(type: "text", nullable: false),
+                    sent_at = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    is_read = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -90,18 +91,18 @@ namespace VitaTrackAPI.Migrations
                 name: "patients",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    age = table.Column<int>(type: "int", nullable: true),
-                    cnp = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
-                    adress_street = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: true),
-                    adress_city = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: true),
-                    adress_county = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: true),
-                    phone_number = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
-                    email = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: true),
-                    occupation = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: true),
-                    workplace = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    age = table.Column<int>(type: "integer", nullable: true),
+                    cnp = table.Column<string>(type: "character varying(13)", maxLength: 13, nullable: false),
+                    adress_street = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    adress_city = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    adress_county = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    phone_number = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: true),
+                    email = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    occupation = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    workplace = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -118,10 +119,10 @@ namespace VitaTrackAPI.Migrations
                 name: "user_favorites",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    user_id = table.Column<int>(type: "int", nullable: false),
-                    doctor_id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    doctor_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,13 +145,13 @@ namespace VitaTrackAPI.Migrations
                 name: "alarms",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    alarm_type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    created_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    activated = table.Column<bool>(type: "bit", nullable: true, defaultValue: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    alarm_type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    description = table.Column<string>(type: "text", nullable: true),
+                    activated = table.Column<bool>(type: "boolean", nullable: true, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -167,13 +168,13 @@ namespace VitaTrackAPI.Migrations
                 name: "chart_data",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    chart_type = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    data_label = table.Column<string>(type: "nvarchar(225)", maxLength: 225, nullable: true),
-                    value = table.Column<decimal>(type: "decimal(10,2)", nullable: true),
-                    recorded_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    chart_type = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    data_label = table.Column<string>(type: "character varying(225)", maxLength: 225, nullable: true),
+                    value = table.Column<decimal>(type: "numeric(10,2)", nullable: true),
+                    recorded_at = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -190,11 +191,11 @@ namespace VitaTrackAPI.Migrations
                 name: "ecg_signals",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    timestamp = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    signal = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    timestamp = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    signal = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -211,12 +212,12 @@ namespace VitaTrackAPI.Migrations
                 name: "location_map",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    latitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
-                    longitude = table.Column<decimal>(type: "decimal(9,6)", nullable: true),
-                    recorded_at = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    latitude = table.Column<decimal>(type: "numeric(9,6)", nullable: true),
+                    longitude = table.Column<decimal>(type: "numeric(9,6)", nullable: true),
+                    recorded_at = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
                 {
@@ -233,13 +234,13 @@ namespace VitaTrackAPI.Migrations
                 name: "medical_history",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    history = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    allergies = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    cardiology_consultations = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    history = table.Column<string>(type: "text", nullable: true),
+                    allergies = table.Column<string>(type: "text", nullable: true),
+                    cardiology_consultations = table.Column<string>(type: "text", nullable: true),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,13 +257,13 @@ namespace VitaTrackAPI.Migrations
                 name: "physical_activities",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    activity_type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    start_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    end_time = table.Column<DateTime>(type: "datetime", nullable: true),
-                    duration = table.Column<int>(type: "int", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    activity_type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    start_time = table.Column<DateTime>(type: "timestamp", nullable: true),
+                    end_time = table.Column<DateTime>(type: "timestamp", nullable: true),
+                    duration = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -279,12 +280,12 @@ namespace VitaTrackAPI.Migrations
                 name: "recommendations",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    recommendation_type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    daily_duration = table.Column<int>(type: "int", nullable: true),
-                    additional_instructions = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    recommendation_type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    daily_duration = table.Column<int>(type: "integer", nullable: true),
+                    additional_instructions = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -301,12 +302,12 @@ namespace VitaTrackAPI.Migrations
                 name: "sensor_data",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    patient_id = table.Column<int>(type: "int", nullable: false),
-                    timestamp = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    sensor_type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    value = table.Column<decimal>(type: "decimal(10,2)", nullable: true)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    patient_id = table.Column<int>(type: "integer", nullable: false),
+                    timestamp = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    sensor_type = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: true),
+                    value = table.Column<decimal>(type: "numeric(10,2)", nullable: true)
                 },
                 constraints: table =>
                 {
