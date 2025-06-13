@@ -5,8 +5,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
-var connStr = builder.Configuration.GetConnectionString("VitaTrack")
-    ?? Environment.GetEnvironmentVariable("ConnectionStrings__VitaTrack");
+/*var connStr = builder.Configuration.GetConnectionString("VitaTrack")
+    ?? Environment.GetEnvironmentVariable("ConnectionStrings__VitaTrack");*/
+
+var connStr = Environment.GetEnvironmentVariable("ConnectionStrings__VitaTrack");
+
+
 
 
 // Add services to the container.
