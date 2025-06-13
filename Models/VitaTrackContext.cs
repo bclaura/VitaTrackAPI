@@ -61,7 +61,7 @@ public partial class VitaTrackContext : DbContext
                 .HasColumnName("alarm_type");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.PatientId).HasColumnName("patient_id");
@@ -87,7 +87,7 @@ public partial class VitaTrackContext : DbContext
             entity.Property(e => e.PatientId).HasColumnName("patient_id");
             entity.Property(e => e.RecordedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("recorded_at");
             entity.Property(e => e.Value)
                 .HasColumnType("decimal(10, 2)")
@@ -141,7 +141,7 @@ public partial class VitaTrackContext : DbContext
                 .HasColumnName("signal");
             entity.Property(e => e.Timestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("timestamp");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.EcgSignals)
@@ -165,7 +165,7 @@ public partial class VitaTrackContext : DbContext
             entity.Property(e => e.PatientId).HasColumnName("patient_id");
             entity.Property(e => e.RecordedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("recorded_at");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.LocationMaps)
@@ -205,7 +205,7 @@ public partial class VitaTrackContext : DbContext
             entity.Property(e => e.SenderId).HasColumnName("sender_id");
             entity.Property(e => e.SentAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("sent_at");
 
             entity.HasOne(d => d.Receiver).WithMany(p => p.MessageReceivers)
@@ -272,11 +272,11 @@ public partial class VitaTrackContext : DbContext
                 .HasColumnName("activity_type");
             entity.Property(e => e.Duration).HasColumnName("duration");
             entity.Property(e => e.EndTime)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("end_time");
             entity.Property(e => e.PatientId).HasColumnName("patient_id");
             entity.Property(e => e.StartTime)
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("start_time");
 
             entity.HasOne(d => d.Patient).WithMany(p => p.PhysicalActivities)
@@ -316,7 +316,7 @@ public partial class VitaTrackContext : DbContext
                 .HasColumnName("sensor_type");
             entity.Property(e => e.Timestamp)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("timestamp");
             entity.Property(e => e.Value)
                 .HasColumnType("decimal(10, 2)")
@@ -338,7 +338,7 @@ public partial class VitaTrackContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
-                .HasColumnType("timestamp without time zone")
+                .HasColumnType("timestamp with time zone")
                 .HasColumnName("created_at");
             entity.Property(e => e.Email)
                 .HasMaxLength(255)

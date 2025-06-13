@@ -33,7 +33,7 @@ namespace VitaTrackAPI.Controllers
                 Email = registrationDto.Email,
                 Password = registrationDto.Password, // În real life, hash!
                 MobileNumber = registrationDto.MobileNumber,
-                DateOfBirth = registrationDto.DateOfBirth,
+                DateOfBirth = registrationDto.DateOfBirth.ToUniversalTime(),
                 Role = "patient",
                 CreatedAt = DateTime.UtcNow
             };
