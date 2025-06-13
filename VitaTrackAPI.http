@@ -1,0 +1,6 @@
+@VitaTrackAPI_HostAddress = http://localhost:5173
+
+GET {{VitaTrackAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
