@@ -16,8 +16,7 @@ namespace VitaTrackAPI.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        [Route("api/Users/Register")]
+        [HttpPost("Register")]
         public async Task<ActionResult<UserDto>> Register(UserRegistrationDto registrationDto)
         {
             // Verificăm dacă emailul este deja folosit
