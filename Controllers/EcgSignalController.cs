@@ -41,7 +41,7 @@ namespace VitaTrackAPI.Controllers
             {
                 PatientId = dto.PatientId,
                 Signal = dto.Signal,
-                Timestamp = DateTime.Now
+                Timestamp = DateTime.Now.ToUniversalTime() // Asigurăm că timestampul este în UTC
             };
 
             _context.EcgSignals.Add(ecgSignal);
