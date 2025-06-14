@@ -39,7 +39,7 @@ namespace VitaTrackAPI.Controllers
                 SenderId = dto.SenderId,
                 ReceiverId = dto.ReceiverId,
                 Message1 = dto.Message,
-                SentAt = DateTime.Now,
+                SentAt = DateTime.Now.ToUniversalTime(),
                 IsRead = false
             };
 
